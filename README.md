@@ -17,72 +17,59 @@ Please read the Documentation/process/changes.rst file, as it contains the
 requirements for building and running the kernel, and information about
 the problems which may result by upgrading your kernel.
 
-============
+## How to build this shit
 
-1. make a new directory(top directory)
-2. clone kernel to kernel-5.10 directory
-3. move kernel-5.10/build.sh to current directory
-4. as described in the script, clone for the structure:
+1. Make a new directory (top directory)
+```shell
+mkdir fuckmoto && cd fuckmoto
 ```
-.
-├── kernel
-│   ├── prebuilts
-│   └── prebuilts-master
-└── prebuilts
-   ├── build-tools
-   └── clang/host/linux-x86/clang-r416183b
-   (https://android.googlesource.com/platform//prebuilts/clang/host/linux-x86/+archive/b669748458572622ed716407611633c5415da25c/clang-r416183b.tar.gz)
+2. Clone our repository with the kernel and scripts into a directory kernel-5.10
+```shell
+git clone https://github.com/moto-penangf/kernel_moto_penangf kernel-5.10 --depth 1
 ```
+3. Move the helper scripts to the top directory
+```shell
+mv kernel-5.10/helpers/* ./
+```
+
+*It should look something like this:*
+```
+|- fuckmoto
+|  |-- kernel-5.10
+|  |
+|  |-- build.sh
+|  |-- download_toolchain.sh
+|  |-- download_modules.sh
+```
+
+4. Use the script `download_toolchain.sh` to download the correct toolchain and create the proper directory structure for its storage.
+
+> **ATTETION!** Helper scripts must only be run in the top directory!
 
 ```shell
-my_top_dir=$PWD
-mkdir -vp $my_top_dir/kernel
-cd $my_top_dir/kernel
-git clone https://android.googlesource.com/kernel/build
-mkdir -vp  $my_top_dir/kernel/prebuilts-master/clang/host
-cd $my_top_dir/kernel/prebuilts-master/clang/host
-# here you wget and untar tarball i mentioned above
-mkdir -vp  $my_top_dir/kernel/prebuilts/
-cd $my_top_dir/kernel/prebuilts/
-git clone https://android.googlesource.com/kernel/prebuilts/build-tools
-cd $my_top_dir
+./download_toolchain.sh
 ```
-5. clone this to top directory:
+
+5. Use the script `download_modules.sh` to download the vendor kernel modules required for the build
+
 ```shell
-# Branch matching your device
-BRANCH="android-14-release-uhas34.29"
-
-# MET performance driver v3
-git clone --branch "$BRANCH" --single-branch \
-  https://github.com/MotorolaMobilityLLC/vendor-mediatek-kernel_modules-met_drv_v3 \
-  vendor/mediatek/kernel_modules/met_drv_v3  # :contentReference[oaicite:0]{index=0}
-
-# GPU platform support for MT6768
-git clone --branch "$BRANCH" --single-branch \
-  https://github.com/MotorolaMobilityLLC/vendor-mediatek-kernel_modules-gpu \
-  vendor/mediatek/kernel_modules/gpu/platform/mt6768  # :contentReference[oaicite:1]{index=1}
-
-# Common connectivity helpers
-git clone --branch "$BRANCH" --single-branch \
-  https://github.com/MotorolaMobilityLLC/vendor-mediatek-kernel_modules-connectivity-common \
-  vendor/mediatek/kernel_modules/connectivity/common  # :contentReference[oaicite:2]{index=2}
-
-# FM-radio driver
-git clone --branch "$BRANCH" --single-branch \
-  https://github.com/MotorolaMobilityLLC/vendor-mediatek-kernel_modules-connectivity-fmradio \
-  vendor/mediatek/kernel_modules/connectivity/fmradio  # :contentReference[oaicite:3]{index=3}
-
-# GPS
-git clone --branch "$BRANCH" --single-branch https://github.com/MotorolaMobilityLLC/vendor-mediatek-kernel_modules-connectivity-gps \
-  vendor/mediatek/kernel_modules/connectivity/gps
-
-# FEM (Front-End Module)
-git clone --branch "$BRANCH" --single-branch https://github.com/MotorolaMobilityLLC/vendor-mediatek-kernel_modules-connectivity-connfem \
-  vendor/mediatek/kernel_modules/connectivity/connfem
-
-# Connectivity Infrastructure
-git clone --branch MMI-THAS33.31-40-3 --single-branch https://github.com/MotorolaMobilityLLC/vendor-mediatek-kernel_modules-connectivity-conninfra.git \
-  vendor/mediatek/kernel_modules/connectivity/conninfra
-
+./download_modules.sh
 ```
-6. run build.sh
+6. Check that the project structure is correct.
+*A small example of what the structure should look like:*
+```
+|- fuckmoto
+|  |-- kernel-5.10
+|  |-- vendor/mediatek/kernel_modules
+|  |-- prebuilts
+|  |   |-- build-tools
+|  |   |-- clang/host/linux-x86/clang-r416183b
+|  |
+|  |-- build.sh
+|  |-- download_toolchain.sh
+|  |-- download_modules.sh
+```
+7. Build this shitcode from Motorola and MTK using the `build.sh` script
+```shell
+./build.sh
+```
