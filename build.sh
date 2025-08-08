@@ -105,7 +105,16 @@ build_module ../vendor/mediatek/kernel_modules/met_drv_v3 "$REL_KERNEL_OUT/vendo
 build_module ../vendor/mediatek/kernel_modules/gpu/platform/mt6768 "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/gpu/platform/mt6768"
 build_module ../vendor/mediatek/kernel_modules/connectivity/common "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/common"
 build_module ../vendor/mediatek/kernel_modules/connectivity/fmradio "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/fmradio"
-#build_module ../vendor/mediatek/kernel_modules/connectivity/gps/gps_stp "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/gps/gps_stp"
+
+build_module ../vendor/mediatek/kernel_modules/connectivity/connfem "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/connfem"
+build_module ../vendor/mediatek/kernel_modules/connectivity/conninfra "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/conninfra"
+
+build_module ../vendor/mediatek/kernel_modules/connectivity/gps/gps_stp "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/gps/gps_stp"
+build_module ../vendor/mediatek/kernel_modules/connectivity/gps/gps_pwr "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/gps/gps_pwr"
+# build_module ../vendor/mediatek/kernel_modules/connectivity/gps/gps_scp "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/gps/gps_scp"
+# build_module ../vendor/mediatek/kernel_modules/connectivity/gps/data_link/plat/v010 "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/gps/data_link/plat/v010"
+# build_module ../vendor/mediatek/kernel_modules/connectivity/gps/data_link/plat/v030 "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/gps/data_link/plat/v030"
+# build_module ../vendor/mediatek/kernel_modules/connectivity/gps/data_link/plat/v050 "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/gps/data_link/plat/v050"
 
 # ========== ETC SPECIAL MODULES ==========
 cd "$kernel_out_dir"

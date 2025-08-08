@@ -21,14 +21,14 @@ the problems which may result by upgrading your kernel.
 
 1. make a new directory(top directory)
 2. clone kernel to kernel-5.10 directory
-3. move kernel-5.10/build.sh to current directory 
+3. move kernel-5.10/build.sh to current directory
 4. as described in the script, clone for the structure:
 .
-├── kernel  
-│   ├── prebuilts  
+├── kernel
+│   ├── prebuilts
 │   └── prebuilts-master
-└── prebuilts  
-   ├── build-tools  
+└── prebuilts
+   ├── build-tools
    └── clang/host/linux-x86/clang-r416183b
    (https://android.googlesource.com/platform//prebuilts/clang/host/linux-x86/+archive/b669748458572622ed716407611633c5415da25c/clang-r416183b.tar.gz)
    ```
@@ -68,6 +68,18 @@ git clone --branch "$BRANCH" --single-branch \
 git clone --branch "$BRANCH" --single-branch \
   https://github.com/MotorolaMobilityLLC/vendor-mediatek-kernel_modules-connectivity-fmradio \
   vendor/mediatek/kernel_modules/connectivity/fmradio  # :contentReference[oaicite:3]{index=3}
+
+# GPS
+git clone --branch "$BRANCH" --single-branch https://github.com/MotorolaMobilityLLC/vendor-mediatek-kernel_modules-connectivity-gps \
+  vendor/mediatek/kernel_modules/connectivity/gps
+
+# FEM (Front-End Module)
+git clone --branch "$BRANCH" --single-branch https://github.com/MotorolaMobilityLLC/vendor-mediatek-kernel_modules-connectivity-connfem \
+  vendor/mediatek/kernel_modules/connectivity/connfem
+
+# Connectivity Infrastructure
+git clone --branch MMI-THAS33.31-40-3 --single-branch https://github.com/MotorolaMobilityLLC/vendor-mediatek-kernel_modules-connectivity-conninfra.git \
+  vendor/mediatek/kernel_modules/connectivity/conninfra
 
 ```
 6. run build.sh
