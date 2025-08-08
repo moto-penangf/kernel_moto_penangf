@@ -174,7 +174,7 @@ case "$choice" in
     fi
 
     # Customize anykernel.sh for your device
-    sed -i 's|^block=.*|block=/dev/block/bootdevice/by-name/boot|' "$ANYKERNEL_DIR/anykernel.sh"
+    sed -i 's|^block=.*|block=/dev/block/by-name/boot_a|' "$ANYKERNEL_DIR/anykernel.sh"
     sed -i 's|^is_slot_device=.*|is_slot_device=1|' "$ANYKERNEL_DIR/anykernel.sh"
 
     # Create ZIP
