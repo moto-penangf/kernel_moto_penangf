@@ -17,26 +17,24 @@ Please read the Documentation/process/changes.rst file, as it contains the
 requirements for building and running the kernel, and information about
 the problems which may result by upgrading your kernel.
 
-How to even build this thing 
 ============
 
 1. make a new directory(top directory)
 2. clone kernel to kernel-5.10 directory
-3. move kernel-5.10/build.sh to current directory 
+3. move kernel-5.10/build.sh to current directory
 4. as described in the script, clone for the structure:
-
 ```
 .
-├── kernel  
-│   ├── prebuilts  
+├── kernel
+│   ├── prebuilts
 │   └── prebuilts-master
-└── prebuilts  
-   ├── build-tools  
+└── prebuilts
+   ├── build-tools
    └── clang/host/linux-x86/clang-r416183b
    (https://android.googlesource.com/platform//prebuilts/clang/host/linux-x86/+archive/b669748458572622ed716407611633c5415da25c/clang-r416183b.tar.gz)
 ```
-(idk how to make multiline monospace)
-```
+
+```shell
 my_top_dir=$PWD
 mkdir -vp $my_top_dir/kernel
 cd $my_top_dir/kernel
@@ -50,7 +48,8 @@ git clone https://android.googlesource.com/kernel/prebuilts/build-tools
 cd $my_top_dir
 ```
 5. clone this to top directory:
-```
+```shell
+# Branch matching your device
 BRANCH="android-14-release-uhas34.29"
 
 # MET performance driver v3
@@ -72,6 +71,18 @@ git clone --branch "$BRANCH" --single-branch \
 git clone --branch "$BRANCH" --single-branch \
   https://github.com/MotorolaMobilityLLC/vendor-mediatek-kernel_modules-connectivity-fmradio \
   vendor/mediatek/kernel_modules/connectivity/fmradio  # :contentReference[oaicite:3]{index=3}
+
+# GPS
+git clone --branch "$BRANCH" --single-branch https://github.com/MotorolaMobilityLLC/vendor-mediatek-kernel_modules-connectivity-gps \
+  vendor/mediatek/kernel_modules/connectivity/gps
+
+# FEM (Front-End Module)
+git clone --branch "$BRANCH" --single-branch https://github.com/MotorolaMobilityLLC/vendor-mediatek-kernel_modules-connectivity-connfem \
+  vendor/mediatek/kernel_modules/connectivity/connfem
+
+# Connectivity Infrastructure
+git clone --branch MMI-THAS33.31-40-3 --single-branch https://github.com/MotorolaMobilityLLC/vendor-mediatek-kernel_modules-connectivity-conninfra.git \
+  vendor/mediatek/kernel_modules/connectivity/conninfra
 
 ```
 6. run build.sh
