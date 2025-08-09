@@ -41,7 +41,6 @@ OBJSIZE=llvm-size STRIP=llvm-strip
 # ========== CONFIGURE KERNEL ==========
 echo "[*] Generating build config..."
 mkdir -p "$kernel_out_dir"
-python2 kernel-5.10/scripts/gen_build_config.py --kernel-defconfig penangf_defconfig --kernel-defconfig-overlays "" --kernel-build-config-overlays "" -m user -o $REL_KERNEL_OUT/build.config
 cp -p kernel-5.10/arch/arm64/configs/penangf_defconfig "$REL_KERNEL_OUT/penangf.config"
 
 echo "[*] Building kernel..."
