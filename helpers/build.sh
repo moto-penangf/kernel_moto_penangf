@@ -61,6 +61,10 @@ echo "[*] Building kernel"
 
 # Step 3: Build kernel
 make -j$(nproc) O=$kernel_out_dir LLVM=1 LLVM_IAS=1 all
+
+# Build device tree blobs
+make -j$(nproc) O=$kernel_out_dir LLVM=1 LLVM_IAS=1 dtbs
+
 echo "[✔] Built kernel (step#1)"
 
 make -j$(nproc) O=$kernel_out_dir LLVM=1 LLVM_IAS=1 INSTALL_MOD_PATH=$MODULES_STAGING_DIR modules_install
@@ -74,9 +78,11 @@ build_module() {
 
     echo "[*] Building $mod_path"
     mkdir -p "$install_path"
-    make -C $mod_path M=$mod_path KERNEL_SRC=$KERNEL_DIR O=$kernel_out_dir LLVM=1 LLVM_IAS=1 DEPMOD=depmod DTC=dtc
-    make -C $mod_path M=$mod_path KERNEL_SRC=$KERNEL_DIR O=$kernel_out_dir LLVM=1 LLVM_IAS=1 DEPMOD=depmod DTC=dtc INSTALL_MOD_PATH=$install_path modules_install
+
+    make -C "$kernel_out_dir" M="$mod_path" O="$kernel_out_dir" LLVM=1 LLVM_IAS=1 modules
+    make -C "$kernel_out_dir" M="$mod_path" O="$kernel_out_dir" LLVM=1 LLVM_IAS=1 INSTALL_MOD_PATH="$install_path" modules_install
 }
+
 
 echo "[✔] Built modules"
 
@@ -84,16 +90,17 @@ echo "[*] Building standard modules now"
 # ========== STANDARD MODULES ==========
 export GPS_CHIP_ID=common
 
-build_module ../vendor/mediatek/kernel_modules/met_drv_v3 "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/met_drv_v3"
-build_module ../vendor/mediatek/kernel_modules/gpu/platform/mt6768 "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/gpu/platform/mt6768"
-build_module ../vendor/mediatek/kernel_modules/connectivity/common "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/common"
-build_module ../vendor/mediatek/kernel_modules/connectivity/fmradio "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/fmradio"
+build_module ../vendor/mediatek/kernel_modules/met_drv_v3 "$MODULES_STAGING_DIR"
+#build_module ../vendor/mediatek/kernel_modules/gpu/platform/mt6768 "$MODULES_STAGING_DIR"
+#build_module ../vendor/mediatek/kernel_modules/connectivity/common "$MODULES_STAGING_DIR"
 
-build_module ../vendor/mediatek/kernel_modules/connectivity/connfem "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/connfem"
-build_module ../vendor/mediatek/kernel_modules/connectivity/conninfra "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/conninfra"
+#build_module ../vendor/mediatek/kernel_modules/connectivity/connfem "$MODULES_STAGING_DIR"
+#build_module ../vendor/mediatek/kernel_modules/connectivity/conninfra "$MODULES_STAGING_DIR"
 
-build_module ../vendor/mediatek/kernel_modules/connectivity/gps/gps_stp "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/gps/gps_stp"
-build_module ../vendor/mediatek/kernel_modules/connectivity/gps/gps_pwr "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/gps/gps_pwr"
+#build_module ../vendor/mediatek/kernel_modules/connectivity/fmradio "$MODULES_STAGING_DIR"
+
+#build_module ../vendor/mediatek/kernel_modules/connectivity/gps/gps_stp "$MODULES_STAGING_DIR"
+#build_module ../vendor/mediatek/kernel_modules/connectivity/gps/gps_pwr "$MODULES_STAGING_DIR"
 # build_module ../vendor/mediatek/kernel_modules/connectivity/gps/gps_scp "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/gps/gps_scp"
 # build_module ../vendor/mediatek/kernel_modules/connectivity/gps/data_link/plat/v010 "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/gps/data_link/plat/v010"
 # build_module ../vendor/mediatek/kernel_modules/connectivity/gps/data_link/plat/v030 "$REL_KERNEL_OUT/vendor/mediatek/kernel_modules/connectivity/gps/data_link/plat/v030"
@@ -103,10 +110,10 @@ build_module ../vendor/mediatek/kernel_modules/connectivity/gps/gps_pwr "$REL_KE
 cd "$kernel_out_dir"
 
 declare -A etc_modules=(
-#    [udc]="../../ETC/udc_lib.ko_intermediates/LINKED"
-#    [connfem]="../../ETC/connfem.ko_intermediates/LINKED"
-#    [wmt_drv]="../../ETC/wmt_drv.ko_intermediates/LINKED"
-#    [bt_drv]="../../ETC/bt_drv_connac1x.ko_intermediates/LINKED"
+#    [udc]="../ETC/udc_lib.ko_intermediates/LINKED"
+#    [connfem]="../ETC/connfem.ko_intermediates/LINKED"
+#    [wmt_drv]="../ETC/wmt_drv.ko_intermediates/LINKED"
+#    [bt_drv]="../ETC/bt_drv_connac1x.ko_intermediates/LINKED"
 #    [wmt_chrdev_wifi]="../../ETC/wmt_chrdev_wifi.ko_intermediates/LINKED"
 #    [wlan_drv_gen4m]="../../ETC/wlan_drv_gen4m.ko_intermediates/LINKED"
 )
@@ -118,6 +125,8 @@ for mod in "${!etc_modules[@]}"; do
          KBUILD_EXTRA_SYMBOLS="$kernel_out_dir/Module.symvers" \
          src="$my_top_dir/vendor/mediatek/kernel_modules/connectivity/${mod//_/\/}"
 done
+
+depmod -b "$MODULES_STAGING_DIR" 5.10.198-IsaacDeesNuts+
 
 echo "[✔] Kernel and modules built successfully."
 
