@@ -1,16 +1,17 @@
 #!/bin/bash
-my_top_dir=$PWD
 
-mkdir -vp $my_top_dir/kernel
-cd $my_top_dir/kernel
-git clone https://android.googlesource.com/kernel/build
+echo "[*] Cloning toolchains..."
 
-mkdir -vp  $my_top_dir/kernel/prebuilts-master/clang/host
-cd $my_top_dir/kernel/prebuilts-master/clang/host
-wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/b669748458572622ed716407611633c5415da25c/clang-r416183b.tar.gz
-tar -xf clang-r416183b.tar.gz
+mkdir -vp "$my_top_dir/prebuilts/clang/host/clang-r416183b"
+wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/b669748458572622ed716407611633c5415da25c/clang-r416183b.tar.gz \
+     -O "$my_top_dir/prebuilts/clang/host/linux-x86/clang-r416183b/clang-r416183b.tar.gz"
+tar -xf "$my_top_dir/prebuilts/clang/host/linux-x86/clang-r416183b/clang-r416183b.tar.gz" \
+    -C "$my_top_dir/prebuilts/clang/host/linux-x86/clang-r416183b"
 
-mkdir -vp  $my_top_dir/kernel/prebuilts/
-cd $my_top_dir/kernel/prebuilts/
-git clone https://android.googlesource.com/kernel/prebuilts/build-tools
-cd $my_top_dir
+if [ ! -d prebuilts/build-tools ]; then
+    echo "[I] Toolchain is not clonned, clonning..."
+    git clone https://android.googlesource.com/kernel/prebuilts/build-tools $my_top_dir/prebuilts/build-tools
+else
+    echo "[✔] Build tools already exist, skipping"
+fi
+

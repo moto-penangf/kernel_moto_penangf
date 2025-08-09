@@ -38,22 +38,6 @@ HOSTCC=clang HOSTCXX=clang++ CC=clang LD=ld.lld \
 NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump \
 OBJSIZE=llvm-size STRIP=llvm-strip
 
-# ========== PREBUILTS SETUP ==========
-echo "[*] Cloning toolchains..."
-mkdir -p $my_top_dir/prebuilts/clang/host
-
-#git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 -b aml_tz3_314012010 $my_top_dir/prebuilts/clang/host/linux-x86
-# this is commented out because we dont need the whole thing, just download some one toolchain
-# (or copy clang from AOSP source in prebuilts/clang/host/linux-x86)
-
-if [ ! -d prebuilts/build-tools ]; then
-    echo "[I] Toolchain is not cloneed, check build script line 50 for more info"
-    echo "    Script will fail in a moment"
-    git clone https://android.googlesource.com/kernel/prebuilts/build-tools $my_top_dir/prebuilts/build-tools
-else
-    echo "[✔] Build tools already exist, skipping"
-fi
-
 # ========== CONFIGURE KERNEL ==========
 echo "[*] Generating build config..."
 mkdir -p "$kernel_out_dir"
@@ -189,3 +173,4 @@ case "$choice" in
     echo "Invalid choice: '$choice'. Please answer 'y' or 'n'."
     ;;
 esac
+
