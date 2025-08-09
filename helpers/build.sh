@@ -79,10 +79,9 @@ build_module() {
     echo "[*] Building $mod_path"
     mkdir -p "$install_path"
 
-    make -C "$kernel_out_dir" M="$mod_path" KERNEL_SRC="$KERNEL_DIR" O="$kernel_out_dir" LLVM=1 LLVM_IAS=1 DEPMOD=depmod DTC=dtc modules
-    make -C "$kernel_out_dir" M="$mod_path" KERNEL_SRC="$KERNEL_DIR" O="$kernel_out_dir" LLVM=1 LLVM_IAS=1 DEPMOD=depmod DTC=dtc INSTALL_MOD_PATH="$install_path" modules_install
+    make -C "$KERNEL_DIR" M="$mod_path" O="$kernel_out_dir" LLVM=1 LLVM_IAS=1 modules
+    make -C "$KERNEL_DIR" M="$mod_path" O="$kernel_out_dir" LLVM=1 LLVM_IAS=1 INSTALL_MOD_PATH="$install_path" modules_install
 }
-
 
 echo "[✔] Built modules"
 
