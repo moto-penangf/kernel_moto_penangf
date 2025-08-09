@@ -50,12 +50,17 @@ mv kernel-5.10/helpers/* ./
 ./download_toolchain.sh
 ```
 
-5. Use the script `download_modules.sh` to download the vendor kernel modules required for the build
+5. Use the script `download_gki.sh` to download the GKI
+```shell
+./download_gki.sh
+```
+
+6. Use the script `download_modules.sh` to download the vendor kernel modules required for the build
 
 ```shell
 ./download_modules.sh
 ```
-6. Check that the project structure is correct.
+7. Check that the project structure is correct.
 *A small example of what the structure should look like:*
 ```
 |- fuckmoto
@@ -69,7 +74,7 @@ mv kernel-5.10/helpers/* ./
 |  |-- download_toolchain.sh
 |  |-- download_modules.sh
 ```
-7. Build this shitcode from Motorola and MTK using the `build.sh` script
+8. Build this shitcode from Motorola and MTK using the `build.sh` script
 ```shell
 ./build.sh
 ```
